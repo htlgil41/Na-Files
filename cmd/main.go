@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func InitToolsForNa() {
+func InitToolsForNa() (string, error) {
 
 	var directorioNa string = fmt.Sprintf("./%s", "na_files")
 	var aeskey string = "AES.key"
@@ -64,7 +64,7 @@ chooseOpc:
 		fmt.Printf("Valor invalido el programa se cerrara")
 		os.Exit(0)
 
-		return
+		return "", fmt.Errorf("Opcion invalida al crear o leer la llave AES")
 	}
 
 	switch opc {
@@ -74,11 +74,25 @@ chooseOpc:
 			fmt.Println("Usted posee una llave AES que debera moverla en el direcotorio creado")
 			fmt.Printf("Mueva la llave al directorio %q (el archivo debe ser llamado %q)\n", directorioNa, aeskey)
 
-			fmt.Println("Presione cualquier tecla valida si ya movio la llave AES")
+			fmt.Println("Presione cualquier tecla + ENTER valida si ya movio la llave AES")
 			var anyKey string
 			fmt.Scanf("%s", &anyKey)
 
 			fmt.Println(aeskey)
+
+			key, errFileAes := fs.ReadShortFile(
+				directorioNa,
+				aeskey,
+			)
+			if errFileAes != nil {
+
+				fmt.Println("Erorr al crear el archivo con la llave", errFileAes.Error())
+				os.Exit(0)
+				return "", fmt.Errorf("Erorr al crear el archivo con la llave %q", errFileAes.Error())
+
+			}
+
+			return key, nil
 		}
 	case 2:
 		{
@@ -91,7 +105,7 @@ chooseOpc:
 
 				fmt.Println("error al generar la llave AES ", errAes)
 				os.Exit(0)
-				return
+				return "", fmt.Errorf("error al generar la llave AES %q", errAes)
 			}
 
 			fileAes, errFileAes := fs.CreateFile(
@@ -100,19 +114,21 @@ chooseOpc:
 			)
 			if errFileAes != nil {
 
-				fmt.Println("Erorr al crear el archivo con la llave")
+				fmt.Println("Erorr al crear el archivo con la llave", errFileAes.Error())
 				os.Exit(0)
-				return
+				return "", fmt.Errorf("Erorr al crear el archivo con la llave %q", errFileAes.Error())
+
 			}
 			defer fileAes.Close()
-
 			fileAes.WriteString(key)
+
+			return key, nil
 		}
 	default:
 		{
 			fmt.Println("Opcion invalida programa cerrado....")
 			os.Exit(0)
-			return
+			return "", fmt.Errorf("Opcion no disponible al crear o leer la llave AES")
 		}
 	}
 }
