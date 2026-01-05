@@ -1,9 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"nafiles/cmd"
+)
 
 func main() {
 
-	fmt.Println("Na-files")
-
+	fmt.Println("Bienvendio!!, Na-files")
+	cmd.InitToolsForNa()
 }
