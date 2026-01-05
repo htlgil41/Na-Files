@@ -87,5 +87,5 @@ func NcripteStart() {
 		fmt.Println()
 	}
 
-	fmt.Printf("Llave AES %x\n", keyAESAtByte)
+	fmt.Printf("Debere proteger su llave ya que si la pierde no hay manera de recuperar su archivo %x\n", keyAESAtByte)
 }
