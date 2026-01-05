@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func InitNcripted() (string, error) {
+func InitEncripted() (string, error) {
 
 	var opc int32
 	var directorioNa string = fmt.Sprintf("./%s", "na_files")
@@ -34,11 +34,9 @@ func InitNcripted() (string, error) {
 			fmt.Println("Usted posee una llave AES que debera moverla en el direcotorio creado")
 			fmt.Printf("Mueva la llave al directorio %q (el archivo debe ser llamado %q)\n", directorioNa, aeskey)
 
-			fmt.Println("Presione cualquier tecla + ENTER valida si ya movio la llave AES")
+			fmt.Println("Presione ENTER valida si ya movio la llave AES")
 			var anyKey string
 			fmt.Scanf("%s", &anyKey)
-
-			fmt.Println(aeskey)
 
 			key, errFileAes := fs.ReadShortFile(
 				directorioNa,

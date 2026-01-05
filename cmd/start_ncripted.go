@@ -10,10 +10,10 @@ import (
 	"log"
 )
 
-func NcripteStart() {
+func EncriptarStart() {
 
 	var chuckFilePlain int64 = (1024 * 1024) * 10
-	keyAES, errKeyAES := InitNcripted()
+	keyAES, errKeyAES := InitEncripted()
 	if errKeyAES != nil {
 		log.Fatal(errKeyAES.Error())
 	}
@@ -38,8 +38,8 @@ func NcripteStart() {
 		log.Fatal("Error al crear el bloque del cipher")
 	}
 
-	gcm, erGcm := cipher.NewGCM(block)
-	if erGcm != nil {
+	gcm, errGcm := cipher.NewGCM(block)
+	if errGcm != nil {
 
 		log.Fatal("Error al crar el modelo GCM")
 	}
@@ -87,5 +87,5 @@ func NcripteStart() {
 		fmt.Println()
 	}
 
-	fmt.Printf("Debere proteger su llave ya que si la pierde no hay manera de recuperar su archivo %q\n", string(keyAESAtByte))
+	fmt.Printf("Debere proteger su llave ya que si la pierde no hay manera de recuperar su archivo '%xw'\n", keyAESAtByte)
 }
