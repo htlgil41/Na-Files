@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func GenerateKeyAESforNcripted() (string, error) {
+func GenerateKeyAES() (string, error) {
 
 	byesForSecuen := make([]byte, 32)
 	_, errRand := rand.Read(byesForSecuen)

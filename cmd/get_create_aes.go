@@ -6,13 +6,13 @@ import (
 	"os"
 )
 
-func InitEncripted() (string, error) {
+func CreateOrGetAes() (string, error) {
 
 	var opc int32
 	var directorioNa string = fmt.Sprintf("./%s", "na_files")
 	var aeskey string = "AES.key"
 
-	InitDirs(directorioNa)
+	InitDirsByApp(directorioNa)
 
 	fmt.Println("Ahora debera seleccionar las siguientes opcion para la accion")
 	fmt.Println("la opcion que ingresara es invalida el programa se cerrara")
@@ -58,7 +58,7 @@ func InitEncripted() (string, error) {
 			fmt.Println("Se creara la llave AES")
 			fmt.Printf("Direcotrio donde estara la llave %q (el archivo se llama %q)\n", directorioNa, aeskey)
 
-			key, errAes := GenerateKeyAESforNcripted()
+			key, errAes := GenerateKeyAES()
 			if errAes != nil {
 
 				fmt.Println("error al generar la llave AES ", errAes)

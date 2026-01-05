@@ -10,10 +10,10 @@ import (
 	"log"
 )
 
-func EncriptarStart() {
+func StartEncripted() {
 
 	var chuckFilePlain int64 = (1024 * 1024) * 10
-	keyAES, errKeyAES := InitEncripted()
+	keyAES, errKeyAES := CreateOrGetAes()
 	if errKeyAES != nil {
 		log.Fatal(errKeyAES.Error())
 	}
@@ -24,7 +24,7 @@ func EncriptarStart() {
 	}
 
 	bufferFile := make([]byte, chuckFilePlain)
-	fileForNcripted, filePlain, errGetFiles := InitFileNcripted()
+	fileForNcripted, filePlain, errGetFiles := GetFileForEncriptedAndFilePlain()
 	if errGetFiles != nil {
 
 		log.Fatal(errGetFiles.Error())

@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func InitDirs(
+func InitDirsByApp(
 	directorioNa string,
 ) {
 

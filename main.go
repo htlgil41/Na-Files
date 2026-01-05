@@ -29,13 +29,13 @@ chooseOpc:
 			{
 
 				fmt.Println("Encriptar mi archivo")
-				cmd.EncriptarStart()
+				cmd.StartEncripted()
 				break chooseOpc
 			}
 		case 2:
 			{
 				fmt.Println("Desencriptar mi archivo")
-				cmd.DesencripteStart()
+				cmd.StartDesencripted()
 				break chooseOpc
 			}
 		case 3:

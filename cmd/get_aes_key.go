@@ -5,12 +5,12 @@ import (
 	"os"
 )
 
-func InitDesencripted() (string, error) {
+func GetAesKey() (string, error) {
 
 	var aes_key string = "AES.key"
 	var directorioNa string = fmt.Sprintf("./%s", "na_files")
 
-	InitDirs(directorioNa)
+	InitDirsByApp(directorioNa)
 
 	fmt.Printf("Mueva la llave AES dentro del directorio creado (especificamente con el nombre %q)\n", aes_key)
 	fmt.Println("La llave debe estaer codigocada en hex....")

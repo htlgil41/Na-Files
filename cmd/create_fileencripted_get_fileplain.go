@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func InitFileNcripted() (*os.File, *os.File, error) {
+func CreateFileForEncriptedAndFilePlain() (*os.File, *os.File, error) {
 
 	var path_full string = fmt.Sprintf("%s", "./na_files")
 	var fileNcripted string
