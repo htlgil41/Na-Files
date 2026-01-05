@@ -9,6 +9,7 @@ func GetFileForEncriptedAndFilePlain() (*os.File, *os.File, error) {
 
 	var path_full string = fmt.Sprintf("%s", "./na_files")
 	var fileNcripted string
+	var fileDesencripted string
 
 	fmt.Println("..............")
 	fmt.Printf("Ahora bien, necesito que muevas el archivo que deseas desencriptar al directorio\n")
@@ -25,6 +26,16 @@ func GetFileForEncriptedAndFilePlain() (*os.File, *os.File, error) {
 
 		}
 
+		fmt.Println("Ingrese el nombre del archivo real con su extension original. Ejeplo File.mkv")
+
+		_, errfileDesencripted := fmt.Scanf("%s", &fileDesencripted)
+		if errfileDesencripted != nil {
+
+			fmt.Println("Error al leer el nombre del archivo que desea encriptar")
+			continue
+
+		}
+
 		fileHasEncripted, errfileHasEncripted := os.Open(
 			fmt.Sprintf("%s/%s", path_full, fileNcripted),
 		)
@@ -35,7 +46,7 @@ func GetFileForEncriptedAndFilePlain() (*os.File, *os.File, error) {
 		}
 
 		fileForDesencripted, errFile := os.OpenFile(
-			fmt.Sprintf("%s/%s", path_full, fileNcripted),
+			fmt.Sprintf("%s/%s", path_full, fileDesencripted),
 			os.O_CREATE|
 				os.O_RDONLY|
 				os.O_WRONLY,

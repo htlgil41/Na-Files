@@ -12,7 +12,7 @@ import (
 
 func StartEncripted() {
 
-	var chuckFilePlain int64 = (1024 * 1024) * 10
+	var chuckFilePlain int = (1024 * 1024) * 10
 	keyAES, errKeyAES := CreateOrGetAes()
 	if errKeyAES != nil {
 		log.Fatal(errKeyAES.Error())
@@ -24,7 +24,7 @@ func StartEncripted() {
 	}
 
 	bufferFile := make([]byte, chuckFilePlain)
-	fileForNcripted, filePlain, errGetFiles := GetFileForEncriptedAndFilePlain()
+	fileForNcripted, filePlain, errGetFiles := CreateFileForEncriptedAndFilePlain()
 	if errGetFiles != nil {
 
 		log.Fatal(errGetFiles.Error())
@@ -46,30 +46,38 @@ func StartEncripted() {
 
 	var p int32 = 1
 	for {
-		nonce := make([]byte, gcm.NonceSize())
-		io.ReadFull(rand.Reader, nonce)
-
-		_, errRead := filePlain.Read(bufferFile)
-
+		n, errRead := filePlain.Read(bufferFile)
 		if errRead == io.EOF {
 			fmt.Println("Se ha leido todo el archivo")
 			break
 		}
-
 		if errRead != nil {
 			fmt.Println("Error inesperado al leer el archivo el progama se cerrara")
 			break
 		}
 
+		nonce := make([]byte, gcm.NonceSize())
+		io.ReadFull(rand.Reader, nonce)
+
 		cipherText := gcm.Seal(
+			nil,
 			nonce,
-			nonce,
-			bufferFile,
+			bufferFile[:n],
 			nil,
 		)
 
-		fileForNcripted.Write(nonce)
-		fileForNcripted.Write(cipherText)
+		_, errWriteNonce := fileForNcripted.Write(nonce)
+		if errWriteNonce != nil {
+
+			fmt.Println("Error al escribir en el achivo encriptado [nonce]")
+			return
+		}
+		_, errWriteCihper := fileForNcripted.Write(cipherText)
+		if errWriteCihper != nil {
+
+			fmt.Println("Error al escribir en el achivo encriptado [cipher]")
+			return
+		}
 
 		for range p {
 

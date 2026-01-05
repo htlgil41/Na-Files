@@ -11,7 +11,7 @@ import (
 
 func StartDesencripted() {
 
-	var chuckFilePlain int64 = (1024 * 1024) * 10
+	var chuckFilePlain int = (1024 * 1024) * 10
 	keyAe, errkeyAes := GetAesKey()
 	if errkeyAes != nil {
 
@@ -46,22 +46,34 @@ func StartDesencripted() {
 	}
 
 	nonceSize := gcm.NonceSize()
-	encryptedChunkSize := nonceSize + int(chuckFilePlain) + gcm.Overhead()
+	encryptedChunkSize := nonceSize + chuckFilePlain + gcm.Overhead()
 	buffer := make([]byte, encryptedChunkSize)
 
 	for {
-
-		n, errRead := fileDesencripted.Read(buffer)
+		n, errRead := fileEncripted.Read(buffer)
 		if errRead == io.EOF {
 			fmt.Println("Se ha leido todo el archivo")
 			break
 		}
 
 		if errRead != nil {
-			fmt.Println("Error inesperado al leer el archivo el progama se cerrara")
+			fmt.Println("Error inesperado al leer el archivo el progama se cerrara ", errRead.Error())
 			break
 		}
 
-		fmt.Println(string(buffer[:n]))
+		nonceExtracr, ciphertext := buffer[:nonceSize], buffer[nonceSize:n]
+		textDesen, errTextDesen := gcm.Open(
+			nil,
+			nonceExtracr,
+			ciphertext,
+			nil,
+		)
+		if errTextDesen != nil {
+
+			fmt.Println("Error al abrir el GCM para desencriptar parte del chuck ", errTextDesen.Error())
+			break
+		}
+
+		fileDesencripted.Write(textDesen)
 	}
 }
