@@ -37,7 +37,7 @@ func InitFileNcripted() (*os.File, *os.File, error) {
 
 		filenameOnly := strings.Split(fileNcripted, ".")[0]
 		fileForNcripted, errFile := os.OpenFile(
-			fmt.Sprintf("%s/%s", path_full, fmt.Sprintf("ncripted-%s.enc", filenameOnly)),
+			fmt.Sprintf("%s/%s", path_full, fmt.Sprintf("%s.enc", filenameOnly)),
 			os.O_CREATE|
 				os.O_RDONLY|
 				os.O_WRONLY,
