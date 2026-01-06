@@ -49,6 +49,10 @@ func StartDesencripted() {
 	encryptedChunkSize := nonceSize + chuckFilePlain + gcm.Overhead()
 	buffer := make([]byte, encryptedChunkSize)
 
+	infoFile, _ := fileEncripted.Stat()
+	percentageTotal := float64(infoFile.Size()) / (float64(1024) * float64(1024))
+
+	p := float64(0)
 	for {
 		n, errRead := fileEncripted.Read(buffer)
 		if errRead == io.EOF {
@@ -75,5 +79,7 @@ func StartDesencripted() {
 		}
 
 		fileDesencripted.Write(textDesen)
+		p = p + float64(n)/(float64(1024)*float64(1024))
+		fmt.Printf("%d%s\n", int64((p/percentageTotal)*100), "%")
 	}
 }

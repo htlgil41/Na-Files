@@ -12,7 +12,7 @@ import (
 
 func StartEncripted() {
 
-	var chuckFilePlain int = (1024 * 1024) * 10
+	var chuckFilePlain int64 = (1024 * 1024) * 10
 	keyAES, errKeyAES := CreateOrGetAes()
 	if errKeyAES != nil {
 		log.Fatal(errKeyAES.Error())
@@ -44,7 +44,10 @@ func StartEncripted() {
 		log.Fatal("Error al crar el modelo GCM")
 	}
 
-	var p int32 = 1
+	infoFile, _ := filePlain.Stat()
+	percentageTotal := float64(infoFile.Size()) / (float64(1024) * float64(1024))
+
+	p := float64(0)
 	for {
 		n, errRead := filePlain.Read(bufferFile)
 		if errRead == io.EOF {
@@ -79,20 +82,8 @@ func StartEncripted() {
 			return
 		}
 
-		for range p {
-
-			fmt.Print(".")
-		}
-
-		if p%10 == 0 {
-
-			p = 1
-		} else {
-
-			p++
-		}
-
-		fmt.Println()
+		p = p + float64(n)/(float64(1024)*float64(1024))
+		fmt.Printf("%d%s\n", int64((p/percentageTotal)*100), "%")
 	}
 
 	fmt.Printf("Debere proteger su llave ya que si la pierde no hay manera de recuperar su archivo '%xw'\n", keyAESAtByte)
